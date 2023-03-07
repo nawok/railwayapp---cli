@@ -1,12 +1,14 @@
 use std::time::Duration;
 
-use anyhow::bail;
+use anyhow::{bail, Context, Result};
+use clap::Parser;
+use colored::Colorize;
+use railwayapp_graphql::{mutations, queries};
 
-use crate::consts::ABORTED_BY_USER;
-use crate::consts::TICK_STRING;
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
+use crate::consts::{ABORTED_BY_USER, TICK_STRING};
 use crate::util::prompt::prompt_confirm_with_default;
-
-use super::*;
 
 /// Remove the most recent deployment
 #[derive(Parser)]

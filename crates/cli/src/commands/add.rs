@@ -1,15 +1,14 @@
 use std::time::Duration;
 
-use anyhow::bail;
-use clap::ValueEnum;
+use anyhow::{bail, Context, Result};
+use clap::{Parser, ValueEnum};
 use is_terminal::IsTerminal;
+use railwayapp_graphql::{mutations, queries};
 
-use crate::consts::PLUGINS;
-use crate::consts::TICK_STRING;
-use crate::util::prompt::plugin_enum_to_string;
-use crate::util::prompt::prompt_multi_options;
-
-use super::*;
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
+use crate::consts::{PLUGINS, TICK_STRING};
+use crate::util::prompt::{plugin_enum_to_string, prompt_multi_options};
 
 /// Add a new plugin to your project
 #[derive(Parser)]

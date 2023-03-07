@@ -1,8 +1,12 @@
 use std::collections::BTreeMap;
 
-use crate::consts::SERVICE_NOT_FOUND;
+use anyhow::{Context, Result};
+use clap::Parser;
+use railwayapp_graphql::queries;
 
-use super::*;
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
+use crate::consts::SERVICE_NOT_FOUND;
 
 /// Open a subshell with Railway variables available
 #[derive(Parser)]

@@ -1,11 +1,10 @@
 use std::fmt::Display;
 
 use anyhow::{Context, Result};
-
 use railwayapp_graphql::queries::project::ProjectProjectServicesEdgesNode;
 use railwayapp_graphql::queries::project_plugins::PluginType;
 
-use crate::commands::Configs;
+use crate::config::Configs;
 
 pub fn prompt_options<T: Display>(message: &str, options: Vec<T>) -> Result<T> {
     let select = inquire::Select::new(message, options);

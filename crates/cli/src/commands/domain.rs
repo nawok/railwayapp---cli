@@ -1,11 +1,14 @@
 use std::time::Duration;
 
-use anyhow::bail;
+use anyhow::{bail, Context, Result};
+use clap::Parser;
+use colored::Colorize;
 use is_terminal::IsTerminal;
+use railwayapp_graphql::{mutations, queries};
 
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
 use crate::consts::TICK_STRING;
-
-use super::*;
 
 /// Generates a domain for a service if there is not a railway provided domain
 // Checks if the user is linked to a service, if not, it will generate a domain for the default service

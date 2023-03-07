@@ -17,6 +17,7 @@ impl Table {
     pub fn new(name: String, rows: BTreeMap<String, String>) -> Self {
         Self { name, rows }
     }
+
     pub fn get_string(&self) -> Result<String> {
         let title_str = format!(" Variables for {} ", self.name);
         let title_width = console::measure_text_width(title_str.as_str());
@@ -123,6 +124,7 @@ impl Table {
           bottom_box
         })
     }
+
     pub fn print(&self) -> Result<()> {
         println!("{}", self.get_string()?);
         Ok(())

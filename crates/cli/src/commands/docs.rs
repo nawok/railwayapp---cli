@@ -1,12 +1,10 @@
-use anyhow::bail;
+use anyhow::{bail, Result};
+use clap::Parser;
 use is_terminal::IsTerminal;
 
-use crate::consts::ABORTED_BY_USER;
-use crate::consts::NON_INTERACTIVE_FAILURE;
+use crate::consts::{ABORTED_BY_USER, NON_INTERACTIVE_FAILURE};
 use crate::interact_or;
 use crate::util::prompt::prompt_confirm_with_default;
-
-use super::*;
 
 /// Open Railway Documentation in default browser
 #[derive(Parser)]
@@ -21,6 +19,6 @@ pub async fn command(_args: Args, _json: bool) -> Result<()> {
         bail!(ABORTED_BY_USER);
     }
 
-    ::open::that("https://docs.railway.app/")?;
+    open::that("https://docs.railway.app/")?;
     Ok(())
 }

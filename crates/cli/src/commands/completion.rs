@@ -1,10 +1,8 @@
 use std::io;
 
-use clap::CommandFactory;
-use clap_complete::generate;
-use clap_complete::Shell;
-
-use super::*;
+use anyhow::Result;
+use clap::{CommandFactory, Parser};
+use clap_complete::{generate, Shell};
 
 /// Generate completion script
 #[derive(Parser)]

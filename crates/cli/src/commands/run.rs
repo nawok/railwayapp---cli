@@ -1,10 +1,13 @@
 use std::collections::BTreeMap;
 
-use anyhow::bail;
+use anyhow::{bail, Context, Result};
+use clap::Parser;
+use colored::Colorize;
+use railwayapp_graphql::queries;
 
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
 use crate::consts::SERVICE_NOT_FOUND;
-
-use super::*;
 
 /// Run a local command using variables from the active environment
 #[derive(Debug, Parser)]

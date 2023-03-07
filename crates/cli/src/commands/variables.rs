@@ -1,15 +1,16 @@
 use std::fmt::Display;
 
-use anyhow::bail;
+use anyhow::{bail, Context, Result};
+use clap::Parser;
 use is_terminal::IsTerminal;
+use railwayapp_graphql::queries;
 
-use crate::consts::NO_SERVICE_LINKED;
-use crate::consts::SERVICE_NOT_FOUND;
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
+use crate::consts::{NO_SERVICE_LINKED, SERVICE_NOT_FOUND};
 use crate::interact_or;
 use crate::table::Table;
 use crate::util::prompt::prompt_select;
-
-use super::*;
 
 /// Show variables for active environment
 #[derive(Parser)]

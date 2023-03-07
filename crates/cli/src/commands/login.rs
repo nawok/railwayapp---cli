@@ -1,24 +1,28 @@
-use std::{net::SocketAddr, time::Duration};
+use std::net::SocketAddr;
+use std::time::Duration;
 
-use anyhow::bail;
+use anyhow::{bail, Context, Result};
+use base64::alphabet::URL_SAFE;
+use base64::engine::{GeneralPurpose, GeneralPurposeConfig};
+use base64::Engine;
+use clap::Parser;
+use colored::Colorize;
 use http_body_util::Full;
 use hyper::body::Bytes;
 use hyper::server::conn::http1;
 use hyper::service::service_fn;
-use hyper::Request;
-use hyper::Response;
+use hyper::{Request, Response};
 use is_terminal::IsTerminal;
+use railwayapp_graphql::{mutations, queries};
 use rand::Rng;
-use serde::Deserialize;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use tokio::net::TcpListener;
 
-use crate::consts::ABORTED_BY_USER;
-use crate::consts::TICK_STRING;
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
+use crate::consts::{ABORTED_BY_USER, TICK_STRING};
 use crate::interact_or;
 use crate::util::prompt::prompt_confirm_with_default;
-
-use super::*;
 
 /// Login to your Railway account
 #[derive(Parser)]
@@ -104,7 +108,7 @@ pub async fn command(args: Args, _json: bool) -> Result<()> {
             }
         }
     };
-    if ::open::that(generate_cli_login_url(port)?).is_err() {
+    if open::that(generate_cli_login_url(port)?).is_err() {
         return browserless_login().await;
     }
     let spinner = indicatif::ProgressBar::new_spinner()
@@ -169,11 +173,6 @@ fn generate_login_payload(port: u16) -> Result<String> {
 }
 
 fn generate_cli_login_url(port: u16) -> Result<String> {
-    use base64::{
-        alphabet::URL_SAFE,
-        engine::{GeneralPurpose, GeneralPurposeConfig},
-        Engine,
-    };
     let payload = generate_login_payload(port)?;
     let configs = Configs::new()?;
     let hostname = configs.get_host();
@@ -198,11 +197,6 @@ async fn browserless_login() -> Result<()> {
             .await?;
     let word_code = res.data.context("No data")?.login_session_create;
 
-    use base64::{
-        alphabet::URL_SAFE,
-        engine::{GeneralPurpose, GeneralPurposeConfig},
-        Engine,
-    };
     let payload = format!("wordCode={word_code}&hostname={hostname}");
 
     let engine = GeneralPurpose::new(&URL_SAFE, GeneralPurposeConfig::new());

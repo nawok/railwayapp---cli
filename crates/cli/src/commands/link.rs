@@ -1,12 +1,15 @@
 use std::fmt::Display;
 
-use anyhow::bail;
+use anyhow::{bail, Context, Result};
+use clap::Parser;
+use colored::Colorize;
 use is_terminal::IsTerminal;
+use railwayapp_graphql::queries;
 
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
 use crate::consts::PROJECT_NOT_FOUND;
 use crate::util::prompt::prompt_options;
-
-use super::*;
 
 /// Associate existing project with current directory, may specify projectId as an argument
 #[derive(Parser)]

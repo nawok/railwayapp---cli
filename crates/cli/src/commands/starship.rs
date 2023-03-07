@@ -1,4 +1,7 @@
-use super::*;
+use anyhow::Result;
+use clap::Parser;
+
+use crate::config::Configs;
 
 /// Starship Metadata
 #[derive(Parser)]

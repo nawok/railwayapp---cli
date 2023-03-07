@@ -1,16 +1,13 @@
 use std::collections::BTreeMap;
-use std::fs::create_dir_all;
-use std::fs::File;
-use std::io::Read;
-use std::io::Write;
+use std::fs::{create_dir_all, File};
+use std::io::{Read, Write};
 use std::path::PathBuf;
 
 use anyhow::{Context, Result};
 use colored::Colorize;
 use inquire::ui::{Attributes, RenderConfig, StyleSheet, Styled};
-use serde::{Deserialize, Serialize};
-
 use railwayapp_graphql::queries;
+use serde::{Deserialize, Serialize};
 
 use crate::client::{post_graphql, GQLClient};
 

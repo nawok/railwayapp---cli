@@ -1,11 +1,9 @@
 use anyhow::{bail, Result};
 use graphql_client::{GraphQLQuery, Response};
-use reqwest::header::HeaderMap;
-use reqwest::header::HeaderValue;
+use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::Client;
 
-use crate::commands::Environment;
-use crate::config::Configs;
+use crate::config::{Configs, Environment};
 use crate::consts;
 
 pub struct GQLClient;
@@ -59,7 +57,7 @@ impl GQLClient {
 }
 
 pub async fn post_graphql<Q: GraphQLQuery, U: reqwest::IntoUrl>(
-    client: &reqwest::Client,
+    client: &Client,
     url: U,
     variables: Q::Variables,
 ) -> Result<Response<Q::ResponseData>, reqwest::Error> {

@@ -1,17 +1,20 @@
 use std::time::Duration;
 
-use anyhow::bail;
+use anyhow::{bail, Context, Result};
+use clap::Parser;
 use is_terminal::IsTerminal;
+use railwayapp_graphql::{mutations, queries};
 
-use crate::consts::ABORTED_BY_USER;
-use crate::consts::TICK_STRING;
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
+use crate::consts::{ABORTED_BY_USER, TICK_STRING};
 use crate::interact_or;
-use crate::util::prompt::plugin_enum_to_string;
-use crate::util::prompt::prompt_confirm;
-use crate::util::prompt::prompt_multi_options;
-use crate::util::prompt::prompt_text;
-
-use super::*;
+use crate::util::prompt::{
+    plugin_enum_to_string,
+    prompt_confirm,
+    prompt_multi_options,
+    prompt_text,
+};
 
 /// Delete plugins from a project
 #[derive(Parser)]

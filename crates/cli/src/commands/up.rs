@@ -1,30 +1,27 @@
 use std::path::PathBuf;
-use std::sync::Arc;
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use anyhow::bail;
+use anyhow::{bail, Context, Result};
+use clap::Parser;
+use colored::Colorize;
 use futures::StreamExt;
 use gzp::deflate::Gzip;
 use gzp::ZBuilder;
 use ignore::WalkBuilder;
-use indicatif::ProgressBar;
-use indicatif::ProgressFinish;
-use indicatif::ProgressIterator;
-use indicatif::ProgressStyle;
+use indicatif::{ProgressBar, ProgressFinish, ProgressIterator, ProgressStyle};
 use is_terminal::IsTerminal;
+use railwayapp_graphql::{queries, subscriptions};
 use reqwest::Client;
-use serde::Deserialize;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use synchronized_writer::SynchronizedWriter;
 use tar::Builder;
 
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
 use crate::consts::TICK_STRING;
 use crate::subscription::subscribe_graphql;
-use crate::util::prompt::prompt_select;
-use crate::util::prompt::PromptService;
-
-use super::*;
+use crate::util::prompt::{prompt_select, PromptService};
 
 /// Upload and deploy project from the current directory
 #[derive(Parser)]

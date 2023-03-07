@@ -1,12 +1,14 @@
 use std::fmt::Display;
 
-use anyhow::bail;
+use anyhow::{bail, Context, Result};
+use clap::Parser;
 use is_terminal::IsTerminal;
+use railwayapp_graphql::queries;
 
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
 use crate::interact_or;
 use crate::util::prompt::prompt_options;
-
-use super::*;
 
 /// Change the active environment
 #[derive(Parser)]

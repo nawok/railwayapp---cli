@@ -1,8 +1,11 @@
+use anyhow::{Context, Result};
+use clap::Parser;
 use futures::StreamExt;
+use railwayapp_graphql::{queries, subscriptions};
 
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
 use crate::subscription::subscribe_graphql;
-
-use super::*;
 
 /// View the most-recent deploy's logs
 #[derive(Parser)]

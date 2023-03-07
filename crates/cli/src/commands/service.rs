@@ -1,10 +1,11 @@
-use anyhow::bail;
+use anyhow::{bail, Context, Result};
+use clap::Parser;
+use railwayapp_graphql::queries;
 
+use crate::client::{post_graphql, GQLClient};
+use crate::config::Configs;
 use crate::consts::SERVICE_NOT_FOUND;
-use crate::util::prompt::prompt_select;
-use crate::util::prompt::PromptService;
-
-use super::*;
+use crate::util::prompt::{prompt_select, PromptService};
 
 /// Link a service to the current project
 #[derive(Parser)]

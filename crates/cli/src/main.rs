@@ -1,7 +1,5 @@
 use anyhow::Result;
-use clap::Parser;
-use clap::Subcommand;
-
+use clap::{Parser, Subcommand};
 use commands::*;
 
 mod commands;
