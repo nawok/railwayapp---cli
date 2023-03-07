@@ -1,0 +1,17 @@
+[package]
+name = "railwayapp-graphql"
+version = "1.0.0"
+edition = "2021"
+license = "MIT"
+authors = ["Railway <contact@railway.app>"]
+description = "The Railway public API wrapper library"
+readme = "../README.md"
+homepage = "https://github.com/railwayapp/cli"
+repository = "https://github.com/railwayapp/cli"
+rust-version = "1.67.1"
+include = ["src/**/*", "../LICENSE", "../README.md"]
+
+[dependencies]
+chrono = { version = "0.4.23", features = ["serde"], default-features = false }
+graphql_client = { version = "0.11.0", features = ["reqwest-rustls"] }
+serde = { version = "1.0.152", features = ["derive"] }
